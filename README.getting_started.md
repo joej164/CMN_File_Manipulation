@@ -31,6 +31,6 @@ Lets make sure you can run a basic program
 # Updating files
 As I update files, you'll want to pull down the latest versions.
 
-- Navigate to the working directory `~\CMN_File_Manipulation.git`
+- Navigate to the working directory `~\CMN_File_Manipulation`
 - Type `git pull` and that should pull all the latest files and sync your local directory with the main repo
 
