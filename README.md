@@ -1,2 +1,6 @@
 # CMN_File_Manipulation
-File Manipulation for CMN csv files.
+A collection of scripts for file manipulation for CMN csv files.
+
+
+
+
