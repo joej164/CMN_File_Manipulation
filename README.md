@@ -21,6 +21,8 @@ This section includes links to each part of the script
 - All files must have the same number of columns and the same column headers
 - Output the data into a file in the `output_files` folder
 
+### Issues or Concerns
+Currently this is bad data in, bad data out.  No data validation is done if any data is missing.  This can be done in a future script or a modification of this script if it seems like a good idea.
 
 # This is what I think needs done, please review
 Please review, based on what I've heard you need, 
