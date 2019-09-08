@@ -13,6 +13,10 @@ This was also written to use as much of the standard library as possible to mini
 - Install python from the store
 - Once installed type `python --version` to get the current version of Python, which should be `Python 3.7.4` or later
 
+# Install Git for Windows
+This is an optional step, will making updating the files a bit easier, but if you don't want to deal with it, you can always just download the .zip file from the main page
+
+https://git-scm.com/downloads
 
 
 
