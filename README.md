@@ -10,9 +10,9 @@ These were also written in such a was as for a non-software developer to be able
 # Installation of Python
 - Open a command prompt
 - Type `python`
-- If you get some text and `>>>` verify the text above says `Python 3.7.4` or later
+- If you get some text and `>>>` verify the text above says `Python 3.7.4` or later.  Type `exit()` to return to a command prompt.
 - If nothing comes back, then another window to the Windows Store should open to the python page
-- Install python from the store
+- Install python from the Windows store
 - Once installed type `python --version` to get the current version of Python, which should be `Python 3.7.4` or later
 
 # Install Git for Windows
@@ -20,6 +20,8 @@ This is an optional step, will making updating the files a bit easier, but if yo
 
 https://git-scm.com/downloads
 
-
+# Cloning the repo
+Pick a folder to be your working directory, for example `c:\Users\<loginid>\`
+Type `git clone `
 
 
