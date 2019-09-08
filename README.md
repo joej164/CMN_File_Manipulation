@@ -5,6 +5,8 @@ This was written assuming the use of Windows 10 with current updates as of 8-Sep
 
 This was also written to use as much of the standard library as possible to minimze the need to install packages.
 
+These were also written in such a was as for a non-software developer to be able to understand them troubleshoot them if necessary.
+
 # Installation of Python
 - Open a command prompt
 - Type `python`
