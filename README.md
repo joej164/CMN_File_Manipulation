@@ -21,7 +21,15 @@ This is an optional step, will making updating the files a bit easier, but if yo
 https://git-scm.com/downloads
 
 # Cloning the repo
-Pick a folder to be your working directory, for example `c:\Users\<loginid>\`
-Type `git clone `
+If managing zip files isn't your thing, this will be a bit easier with a few commands
+
+- Pick a folder to be your working directory, for example `c:\Users\<loginid>\`
+- Type `git clone https://github.com/joej164/CMN_File_Manipulation.git` to copy the files to your PC
+- You should now have a folder named `CMN_File_Manipulation` in that directory
+
+# Verify everything is working
+Lets make sure you can run a basic program
+
+
 
 
