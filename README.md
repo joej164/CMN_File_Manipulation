@@ -33,6 +33,33 @@ If managing zip files isn't your thing, this will be a bit easier with a few com
 ## Verify everything is working
 Lets make sure you can run a basic program
 
+- Make sure you are in the working directory `~\CMN_File_Manipulation.git`
+- Type `python hello_world.py`  (Auto completion should work so `python he<tab>` should fill out the command
+- You should have the text `You ran a python program` on the screen
+
+# Updating files
+As I update files, you'll want to pull down the latest versions.
+
+- Navigate to the working directory `~\CMN_File_Manipulation.git`
+- Type `git pull` and that should pull all the latest files and sync your local directory with the main repo
+
+# Running specific scripts
+I'll expand this as they get written.
+
+I think I'll break the getting started into a seperate README file as well
+
+Please review, based on what I've heard you need, 
+
+- Merge multiple `csv` files into a single master file
+- Combine users who contributed multiple times into a single entry with a total amount of money contributed
+- Determine the number of tickets each user gets
+- Randomly select X number of tickets from the pool of total tickets
+- Create a csv with winners and addresses to mail the prizes to
+
+Each of the items I see as a seperate script.  I could write a large program, but initialy i'm thinking a bunch of small scripts would be easier for you to use and comprehend.  I could be wrong also..
+
+
+
 
 
 
