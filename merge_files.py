@@ -63,9 +63,7 @@ def read_in_csv_files(files):
             # Remove leading lines from the CSV file
             line = ''
             while CONTRIBUTION_COLUMN_HEADER not in line:
-                print('in while loop')
                 line = csvfile.readline()
-                print(line)
             
             # Define the file_header_list
             file_headers_list=line.rstrip().split(',')
@@ -185,7 +183,7 @@ def pick_raffle_winners(raffle_list):
     try:
         winners = random.sample(range(1, total_tickets + 1), NUMBER_OF_WINNERS)
     except ValueError:
-        print("You selected more winners than tickets")
+        raise ValueError("You selected more winners than tickets")
 
     for w in winners:
         raffle_list[w]['is_winner'] = True
