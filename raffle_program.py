@@ -8,7 +8,7 @@ import random
 import copy
 
 # Name of a column that has the donation
-CONTRIBUTION_COLUMN_HEADER="Amount"
+CONTRIBUTION_COLUMN_HEADER = "Amount"
 
 # Name of the column header that is a unique ID for all donators
 # Typically the email address
@@ -30,6 +30,7 @@ DONATION_TICKET_CONVERSION = {
         150: 65,
         200: 100
         }
+
 
 def list_files_to_combine():
     # List of CSV files to return
@@ -64,15 +65,15 @@ def read_in_csv_files(files):
             line = ''
             while CONTRIBUTION_COLUMN_HEADER not in line:
                 line = csvfile.readline()
-            
+
             # Define the file_header_list
-            file_headers_list=line.rstrip().split(',')
+            file_headers_list = line.rstrip().split(',')
 
             # Read in the data into memory
             reader = csv.DictReader(csvfile, fieldnames=file_headers_list)
             for row in reader:
-                # Append the file name to the entry to know where it came from 
-                row["file_name"] = file 
+                # Append the file name to the entry to know where it came from
+                row["file_name"] = file
 
                 output.append(dict(row))
 
@@ -85,7 +86,7 @@ def read_in_csv_files(files):
 
 def write_out_csv_file(data, file_prefix=None):
     if not file_prefix:
-        file_prefix="default_output"
+        file_prefix = "default_output"
 
     # Figure out the header names from the first entry
     field_names = list(data[0].keys())
@@ -116,11 +117,11 @@ def merge_donations(csv_data):
         else:
             key = row[UNIQUE_ID_COLUMN_HEADER]
             data[key] = {}
-            for k,v in row.items():
+            for k, v in row.items():
                 data[key][k] = str(v)
-            
+
             # Convert the donation amount to an integer
-            try: 
+            try:
                 data[key][CONTRIBUTION_COLUMN_HEADER] = int(float(data[key][CONTRIBUTION_COLUMN_HEADER]))
             except ValueError:
                 print(f"User found with invalid donation: {row}")
@@ -132,7 +133,7 @@ def merge_donations(csv_data):
         output.append(v)
 
     return output
-            
+
 
 def calculate_raffle_entries(csv_data):
     ticket_lookup_dict = create_ticket_lookup_dict()
@@ -144,14 +145,14 @@ def calculate_raffle_entries(csv_data):
             row['tickets'] = ticket_lookup_dict[donation]
 
     return csv_data
-     
+
 
 def create_ticket_lookup_dict():
     d = {}
     current = 0
     previous = 0
     tickets = 0
-    for k,v in DONATION_TICKET_CONVERSION.items():
+    for k, v in DONATION_TICKET_CONVERSION.items():
         current = k
         for x in range(previous, current):
             d[x] = tickets
@@ -167,19 +168,19 @@ def create_raffle_list(csv_data):
         id = row[UNIQUE_ID_COLUMN_HEADER]
         valid_email = True if "@" in id and "." in id else False
 
-        if valid_email == True and row['tickets'] > 0:
+        if valid_email is True and row['tickets'] > 0:
             for x in range(row['tickets']):
                 row_cpy = copy.deepcopy(row)
                 row_cpy['is_winner'] = False
-                
+
                 rl.append(row_cpy)
 
     return rl
 
-            
+
 def pick_raffle_winners(raffle_list):
     total_tickets = len(raffle_list)
-    
+
     try:
         winners = random.sample(range(1, total_tickets + 1), NUMBER_OF_WINNERS)
     except ValueError:
@@ -189,14 +190,12 @@ def pick_raffle_winners(raffle_list):
         raffle_list[w]['is_winner'] = True
 
     return raffle_list
-    
-
 
 
 def main():
     print("Starting the CSV Merge Script")
     csv_files = list_files_to_combine()
-    
+
     print("Read the CSV files into memory")
     csv_data = read_in_csv_files(csv_files)
 
@@ -205,13 +204,13 @@ def main():
 
     print("Find all duplicate email addresses, and combine the donations")
     csv_data = merge_donations(csv_data)
-    
+
     print("Write out the data with combined money")
     write_out_csv_file(csv_data, "combined_donation_output")
 
     print("Calculate number of Raffle Entries per person")
     csv_data = calculate_raffle_entries(csv_data)
-    
+
     print("Write out the data with total raffle tickets")
     write_out_csv_file(csv_data, "raffle_tickets_per_user")
 
