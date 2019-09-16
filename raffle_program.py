@@ -174,8 +174,18 @@ def create_ticket_lookup_dict(donation_def):
     return d
 
 
+# Creates a list of all the users with valid email addresses
+# Also adds a `tickets` column to all rows
 def create_raffle_list(csv_data):
-    rl = []
+    # Verify that a list was passed to the function
+    if not isinstance(csv_data, list):
+        raise TypeError("Must pass a list to this function")
+
+    # Verify that all items in the list are dictionaries
+    if not all([True if isinstance(x, dict) else False for x in csv_data]):
+        raise ValueError("All items in the data structure must be dictionaries")
+
+    raffle_list = []
     for row in csv_data:
         id = row[UNIQUE_ID_COLUMN_HEADER]
         valid_email = True if "@" in id and "." in id else False
@@ -185,9 +195,9 @@ def create_raffle_list(csv_data):
                 row_cpy = copy.deepcopy(row)
                 row_cpy['is_winner'] = False
 
-                rl.append(row_cpy)
+                raffle_list.append(row_cpy)
 
-    return rl
+    return raffle_list
 
 
 def pick_raffle_winners(raffle_list):
