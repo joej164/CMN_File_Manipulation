@@ -136,7 +136,7 @@ def merge_donations(csv_data):
 
 
 def calculate_raffle_entries(csv_data):
-    ticket_lookup_dict = create_ticket_lookup_dict()
+    ticket_lookup_dict = create_ticket_lookup_dict(DONATION_TICKET_CONVERSION)
     for row in csv_data:
         donation = row[CONTRIBUTION_COLUMN_HEADER]
         if donation >= 200:
@@ -147,12 +147,12 @@ def calculate_raffle_entries(csv_data):
     return csv_data
 
 
-def create_ticket_lookup_dict():
+def create_ticket_lookup_dict(donation_def):
     d = {}
     current = 0
     previous = 0
     tickets = 0
-    for k, v in DONATION_TICKET_CONVERSION.items():
+    for k, v in donation_def.items():
         current = k
         for x in range(previous, current):
             d[x] = tickets
