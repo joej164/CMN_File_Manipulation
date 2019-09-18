@@ -200,17 +200,25 @@ def create_raffle_list(csv_data):
     return raffle_list
 
 
-def pick_raffle_winners(raffle_list):
+def pick_raffle_winners(raffle_list, qty_winners):
+    if not isinstance(raffle_list, list):
+        raise TypeError("`raffle_list` must be a list")
+    
+    if not isinstance(qty_winners, int):
+        raise TypeError("`qty_winners` must be an integer")
+
     total_tickets = len(raffle_list)
 
     try:
-        winners = random.sample(range(1, total_tickets + 1), NUMBER_OF_WINNERS)
+        winners = random.sample(range(1, total_tickets), qty_winners)
     except ValueError:
         raise ValueError("You selected more winners than tickets")
 
+    print(f'Winning tickets are: {winners}')
+
     for w in winners:
         raffle_list[w]['is_winner'] = True
-
+    
     return raffle_list
 
 
@@ -243,7 +251,7 @@ def main():
     write_out_csv_file(raffle_list, "expanded_raffle_entries")
 
     print("Pick winners from the raffle list")
-    winner_list = pick_raffle_winners(raffle_list)
+    winner_list = pick_raffle_winners(raffle_list, NUMBER_OF_WINNERS)
 
     print("Write out the winners and non-winners")
     write_out_csv_file(winner_list, "winner_list_entries")

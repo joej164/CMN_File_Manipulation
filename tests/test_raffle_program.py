@@ -67,3 +67,51 @@ def test_create_raffle_list_pass_in_list_of_ints():
         raffle_program.create_raffle_list([1, 2, 3])
 
     assert str(e.value) == "All items in the data structure must be dictionaries"
+
+
+def test_pick_raffle_winners_pass_in_string():
+    with pytest.raises(TypeError) as e:
+        raffle_program.pick_raffle_winners("bad_input", 1)
+
+    assert str(e.value) == "`raffle_list` must be a list"
+
+
+def test_pick_raffle_winners_pass_in_dict():
+    with pytest.raises(TypeError) as e:
+        raffle_program.pick_raffle_winners({"key1": "value1", "key2": "value2"}, 1)
+
+    assert str(e.value) == "`raffle_list` must be a list"
+
+
+def test_pick_raffle_winners_pass_in_string_winners():
+    with pytest.raises(TypeError) as e:
+        raffle_program.pick_raffle_winners(["empty", "list"], "1")
+
+    assert str(e.value) == "`qty_winners` must be an integer"
+
+
+def test_pick_raffle_winners_pass_assert_expected_output():
+    test_list = [
+            {"name": "John Doe", "is_winner": False},
+            {"name": "Jane Doe", "is_winner": False},
+            {"name": "Doe Ray Mi", "is_winner": False},
+            {"name": "Jimme Dough", "is_winner": False}
+            ]
+
+    winners = 2
+
+    winner_list = raffle_program.pick_raffle_winners(test_list, winners)
+
+    assert len(winner_list) == len(test_list)
+
+    # Check the output and verify that the number of winners in the file
+    # match the number of winners passed into the function
+    qty_winners = [True for x in winner_list if x["is_winner"]]
+
+    assert len(qty_winners) == winners
+    
+
+
+
+
+
