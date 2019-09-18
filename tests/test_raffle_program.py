@@ -138,3 +138,48 @@ def test_pick_raffle_winners_too_many_winners():
         raffle_program.pick_raffle_winners(test_list, winners)
 
     assert str(e.value) == "You selected more winners than tickets"
+
+
+def test_calculate_raffle_entries_invalid_csv_data():
+    with pytest.raises(TypeError) as e:
+        raffle_program.calculate_raffle_entries("not a list", {})
+
+    assert str(e.value) == "`csv_data` must be a list"
+
+
+def test_calculate_raffle_entries_invalid_donation_dict():
+    with pytest.raises(TypeError) as e:
+        raffle_program.calculate_raffle_entries([], "not a dict")
+
+    assert str(e.value) == "`donation_dict` must be a dictionary"
+
+
+def test_calculate_raffle_entries_verify_output():
+    test_list = [
+            {"name": "John Doe", "Amount": 0},
+            {"name": "Jane Doe", "Amount": 9},
+            {"name": "Doe Ray Mi", "Amount": 15},
+            {"name": "Jake Doe", "Amount": 199},
+            {"name": "Jimme Dough", "Amount": 1000}
+            ]
+
+    test_conversion_dict = {
+        10: 1,
+        25: 5,
+        50: 10,
+        75: 18,
+        100: 30,
+        125: 45,
+        150: 65,
+        200: 100
+        }
+
+    results = raffle_program.calculate_raffle_entries(test_list, test_conversion_dict)
+
+    assert len(results) == 5
+    assert results[0]["tickets"] == 0
+    assert results[1]["tickets"] == 0
+    assert results[2]["tickets"] == 1 
+    assert results[3]["tickets"] == 65
+    assert results[4]["tickets"] == 100
+

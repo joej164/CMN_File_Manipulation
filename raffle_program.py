@@ -135,8 +135,15 @@ def merge_donations(csv_data):
     return output
 
 
-def calculate_raffle_entries(csv_data):
-    ticket_lookup_dict = create_ticket_lookup_dict(DONATION_TICKET_CONVERSION)
+def calculate_raffle_entries(csv_data, donation_dict):
+    if not isinstance(csv_data, list):
+        raise TypeError("`csv_data` must be a list")
+
+    if not isinstance(donation_dict, dict):
+        raise TypeError("`donation_dict` must be a dictionary")
+
+    ticket_lookup_dict = create_ticket_lookup_dict(donation_dict)
+
     for row in csv_data:
         donation = row[CONTRIBUTION_COLUMN_HEADER]
         if donation >= 200:
@@ -237,7 +244,7 @@ def main():
     write_out_csv_file(csv_data, "combined_donation_output")
 
     print("Calculate number of Raffle Entries per person")
-    csv_data = calculate_raffle_entries(csv_data)
+    csv_data = calculate_raffle_entries(csv_data, DONATION_TICKET_CONVERSION)
 
     print("Write out the data with total raffle tickets")
     write_out_csv_file(csv_data, "raffle_tickets_per_user")
