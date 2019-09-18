@@ -13,6 +13,19 @@ def test_create_ticket_lookup_dict_returns_expected_data():
     output = raffle_program.create_ticket_lookup_dict(TEST_DONATION_TICKET_DEF)
     assert output == expected_out
 
+def test_create_ticket_lookup_dict_invalid_key_type():
+    with pytest.raises(TypeError) as e:
+        raffle_program.create_ticket_lookup_dict({"1": 2})
+
+    assert str(e.value) == "All the keys in the donation dict must be integers"
+
+
+def test_create_ticket_lookup_dict_invalid_value_type():
+    with pytest.raises(TypeError) as e:
+        raffle_program.create_ticket_lookup_dict({1: "2"})
+
+    assert str(e.value) == "All the values in the donation dict must be integers"
+
 
 def test_create_ticket_lookup_dict_pass_in_list():
     with pytest.raises(TypeError) as e:

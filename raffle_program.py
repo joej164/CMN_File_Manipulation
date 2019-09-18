@@ -154,11 +154,11 @@ def create_ticket_lookup_dict(donation_def):
 
     # Verify that all the keys in the dict are integers
     if not all([True if isinstance(x, int) else False for x in donation_def.keys()]):
-        raise ValueError("All the keys in the donation dict must be integers")
+        raise TypeError("All the keys in the donation dict must be integers")
 
     # Verify that all the values dict are integers
     if not all([True if isinstance(x, int) else False for x in donation_def.values()]):
-        raise ValueError("All the values in the donation dict must be integers")
+        raise TypeError("All the values in the donation dict must be integers")
 
     d = {}
     current = 0
