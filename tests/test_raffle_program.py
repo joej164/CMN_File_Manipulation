@@ -13,6 +13,7 @@ def test_create_ticket_lookup_dict_returns_expected_data():
     output = raffle_program.create_ticket_lookup_dict(TEST_DONATION_TICKET_DEF)
     assert output == expected_out
 
+
 def test_create_ticket_lookup_dict_invalid_key_type():
     with pytest.raises(TypeError) as e:
         raffle_program.create_ticket_lookup_dict({"1": 2})
@@ -179,7 +180,6 @@ def test_calculate_raffle_entries_verify_output():
     assert len(results) == 5
     assert results[0]["tickets"] == 0
     assert results[1]["tickets"] == 0
-    assert results[2]["tickets"] == 1 
+    assert results[2]["tickets"] == 1
     assert results[3]["tickets"] == 65
     assert results[4]["tickets"] == 100
-
