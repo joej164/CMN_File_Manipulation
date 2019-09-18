@@ -109,9 +109,19 @@ def test_pick_raffle_winners_pass_assert_expected_output():
     qty_winners = [True for x in winner_list if x["is_winner"]]
 
     assert len(qty_winners) == winners
-    
 
 
+def test_pick_raffle_winners_too_many_winners():
+    test_list = [
+            {"name": "John Doe", "is_winner": False},
+            {"name": "Jane Doe", "is_winner": False},
+            {"name": "Doe Ray Mi", "is_winner": False},
+            {"name": "Jimme Dough", "is_winner": False}
+            ]
 
+    winners = 6
 
+    with pytest.raises(ValueError) as e:
+        raffle_program.pick_raffle_winners(test_list, winners)
 
+    assert str(e.value) == "You selected more winners than tickets"
