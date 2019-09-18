@@ -7,6 +7,7 @@ To run tests just type `pytest` from the root of the project.
 NOTE: In Windows I had to run it in a command prompt that was running as Administrator
 
 To get the coverage report with any code that is uncovered, run as follows:
+
 `pytest --cov=raffle_program --cov-report=term-missing`
 
 
