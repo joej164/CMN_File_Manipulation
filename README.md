@@ -24,7 +24,8 @@ All of these fields are case sensitive.
 * `DONATION_TICKET_CONVERSION` - This identifies the table used for calculating the number of tickets based on the donation size
 
 ## Run the program
-```python raffle_program.py```
+```python raffle_program.py```   (Windows)
+```python3 raffle_program.py```  (Mac or Linux)
 
 - Put all your source CSV files in the `input_files` folder
 - All files must have the same number of columns and the same column headers (files must all be the same format)
