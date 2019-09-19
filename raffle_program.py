@@ -91,7 +91,7 @@ def write_out_csv_file(data, file_prefix=None):
     # Figure out the header names from the first entry
     field_names = list(data[0].keys())
     timestr = time.strftime("%Y%m%d-%H%M%S")
-    output_file_name = f'output_files\\{file_prefix}_{timestr}.csv'
+    output_file_name = pathlib.Path('output_files', f'{file_prefix}_{timestr}.csv')
 
     # Write all the data out to a new CSV file
     with open(output_file_name, 'w', newline='') as csvfile:
