@@ -28,7 +28,7 @@ Lets make sure you can run a basic program
 - Type `python hello_world.py`  (Auto completion should work so `python he<tab>` should fill out the command
 - You should have the text `You ran a python program` on the screen
 
-# Updating files
+## Updating files
 As I update files, you'll want to pull down the latest versions.
 
 - Navigate to the working directory `~\CMN_File_Manipulation`
@@ -66,7 +66,7 @@ Lets make sure you can run a basic program
 - Type `python3 hello_world.py`  (Auto completion should work so `python3 he<tab>` should fill out the command
 - You should have the text `You ran a python program` on the screen
 
-# Updating files
+## Updating files
 As I update files, you'll want to pull down the latest versions.
 
 - Navigate to the working directory `~/CMN_File_Manipulation`
