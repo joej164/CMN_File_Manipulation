@@ -109,30 +109,31 @@ def merge_donations(csv_data, identifier_header, contribution_header, date_heade
 
     if not isinstance(csv_data, list):
         raise TypeError("`csv_data` must be a list")
-    
+
     params = [identifier_header, contribution_header, date_header]
     if not all([isinstance(x, str) for x in params]):
         raise TypeError("All headers must be strings")
 
     data = {}
     for row in csv_data:
-        if row[identifier_header] in data.keys():
-            print(f'Found a duplicate entry for: {row[identifier_header]}')
-            id = row[identifier_header]
-            data[id][contribution_header] += int(float(row[contribution_header]))
-            data[id][date_header] += f"\r\n{row[date_header]}"
-            data[id]['file_name'] += f"\r\n{row['file_name']}"
-        else:
-            key = row[identifier_header]
-            data[key] = {}
-            for k, v in row.items():
-                data[key][k] = str(v)
+        # Verify the contribution is a valid format
+        try:
+            contribution = int(float(row[contribution_header]))
 
-            # Convert the donation amount to an integer
-            try:
-                data[key][contribution_header] = int(float(data[key][contribution_header]))
-            except ValueError:
-                print(f"User found with invalid donation: {row}")
+            if row[identifier_header] in data.keys():
+                print(f'Found a duplicate entry for: {row[identifier_header]}')
+                id = row[identifier_header]
+                data[id][contribution_header] += contribution
+                data[id][date_header] += f"\r\n{row[date_header]}"
+                data[id]['file_name'] += f"\r\n{row['file_name']}"
+            else:
+                key = row[identifier_header]
+                data[key] = {}
+                for k, v in row.items():
+                    data[key][k] = str(v)
+                data[key][contribution_header] = contribution
+        except ValueError:
+            print(f"Skipping user contribution found with invalid donation: {row}")
 
     output = []
 

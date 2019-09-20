@@ -212,13 +212,29 @@ def test_merge_donations_invalid_date_header():
 
     assert str(e.value) == "All headers must be strings"
 
+
+def test_merge_donations_invalid_money_data():
+    test_list = [
+            {"name": "John Doe", "money": "0.99", "id": "john_doe@fake.com", "date": "01/02/03", "file_name": "a"},
+            {"name": "Jane Doe", "money": "9.O1", "id": "jdoe@fake.com", "date": "04/05/06", "file_name": "b"},
+            {"name": "Doe Ray Mi", "money": "15.000", "id": "di_mi@fake.com", "date": "04/02/04", "file_name": "c"},
+            {"name": "Jake Doe", "money": "199.99", "id": "jdoe@fake.com", "date": "01/02/03", "file_name": "d"},
+            {"name": "Jimme Dough", "money": "1000.O0", "id": "ji_doe@fake.com", "date": "01/02/03", "file_name": "e"}
+            ]
+
+    results = raffle_program.merge_donations(test_list, "id", "money", "date")
+
+    assert results[2]["money"] == 199
+    assert "ji_doe@fake.com" not in [x["id"] for x in results]
+
+
 def test_merge_donations_valid_data():
     test_list = [
-            {"name": "John Doe", "money": 0.99, "id": "john_doe@fake.com", "date": "01/02/03", "file_name": "a"},
-            {"name": "Jane Doe", "money": 9.01, "id": "jdoe@fake.com", "date": "04/05/06", "file_name": "b"},
-            {"name": "Doe Ray Mi", "money": 15.000, "id": "di_mi@fake.com", "date": "04/02/04", "file_name": "c"},
-            {"name": "Jake Doe", "money": 199.99, "id": "jdoe@fake.com", "date": "01/02/03", "file_name": "d"},
-            {"name": "Jimme Dough", "money": 1000.00, "id": "ji_doe@fake.com", "date": "01/02/03", "file_name": "e"}
+            {"name": "John Doe", "money": "0.99", "id": "john_doe@fake.com", "date": "01/02/03", "file_name": "a"},
+            {"name": "Jane Doe", "money": "9.01", "id": "jdoe@fake.com", "date": "04/05/06", "file_name": "b"},
+            {"name": "Doe Ray Mi", "money": "15.000", "id": "di_mi@fake.com", "date": "04/02/04", "file_name": "c"},
+            {"name": "Jake Doe", "money": "199.99", "id": "jdoe@fake.com", "date": "01/02/03", "file_name": "d"},
+            {"name": "Jimme Dough", "money": "1000.00", "id": "ji_doe@fake.com", "date": "01/02/03", "file_name": "e"}
             ]
 
     results = raffle_program.merge_donations(test_list, "id", "money", "date")
@@ -230,4 +246,3 @@ def test_merge_donations_valid_data():
     assert "01/02/03" in results[1]["date"]
     assert "b" in results[1]["file_name"]
     assert "d" in results[1]["file_name"]
-
