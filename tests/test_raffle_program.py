@@ -183,3 +183,51 @@ def test_calculate_raffle_entries_verify_output():
     assert results[2]["tickets"] == 1
     assert results[3]["tickets"] == 65
     assert results[4]["tickets"] == 100
+
+
+def test_merge_donations_invalid_csv_data():
+    with pytest.raises(TypeError) as e:
+        raffle_program.merge_donations("bad_input", "id", "contrib", "date")
+
+    assert str(e.value) == "`csv_data` must be a list"
+
+
+def test_merge_donations_invalid_id_header():
+    with pytest.raises(TypeError) as e:
+        raffle_program.merge_donations(["non", "empty", "list"], 10, "contrib", "date")
+
+    assert str(e.value) == "All headers must be strings"
+
+
+def test_merge_donations_invalid_contribution_header():
+    with pytest.raises(TypeError) as e:
+        raffle_program.merge_donations(["non", "empty", "list"], "id", 10, "date")
+
+    assert str(e.value) == "All headers must be strings"
+
+
+def test_merge_donations_invalid_date_header():
+    with pytest.raises(TypeError) as e:
+        raffle_program.merge_donations(["non", "empty", "list"], "id", "contrib", 10)
+
+    assert str(e.value) == "All headers must be strings"
+
+def test_merge_donations_valid_data():
+    test_list = [
+            {"name": "John Doe", "money": 0.99, "id": "john_doe@fake.com", "date": "01/02/03", "file_name": "a"},
+            {"name": "Jane Doe", "money": 9.01, "id": "jdoe@fake.com", "date": "04/05/06", "file_name": "b"},
+            {"name": "Doe Ray Mi", "money": 15.000, "id": "di_mi@fake.com", "date": "04/02/04", "file_name": "c"},
+            {"name": "Jake Doe", "money": 199.99, "id": "jdoe@fake.com", "date": "01/02/03", "file_name": "d"},
+            {"name": "Jimme Dough", "money": 1000.00, "id": "ji_doe@fake.com", "date": "01/02/03", "file_name": "e"}
+            ]
+
+    results = raffle_program.merge_donations(test_list, "id", "money", "date")
+
+    assert len(results) == 4
+    assert results[1]["money"] == 208
+    assert results[3]["money"] == 1000
+    assert "04/05/06" in results[1]["date"]
+    assert "01/02/03" in results[1]["date"]
+    assert "b" in results[1]["file_name"]
+    assert "d" in results[1]["file_name"]
+

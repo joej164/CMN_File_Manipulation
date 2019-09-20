@@ -104,25 +104,33 @@ def write_out_csv_file(data, file_prefix=None):
     print(f"All data output to filename: {output_file_name}")
 
 
-def merge_donations(csv_data):
+def merge_donations(csv_data, identifier_header, contribution_header, date_header):
     # This function finds all duplicate entries and merges them into a single entry
+
+    if not isinstance(csv_data, list):
+        raise TypeError("`csv_data` must be a list")
+    
+    params = [identifier_header, contribution_header, date_header]
+    if not all([isinstance(x, str) for x in params]):
+        raise TypeError("All headers must be strings")
+
     data = {}
     for row in csv_data:
-        if row[UNIQUE_ID_COLUMN_HEADER] in data.keys():
-            print(f'Found a duplicate entry for: {row[UNIQUE_ID_COLUMN_HEADER]}')
-            id = row[UNIQUE_ID_COLUMN_HEADER]
-            data[id][CONTRIBUTION_COLUMN_HEADER] += int(float(row[CONTRIBUTION_COLUMN_HEADER]))
-            data[id][DATE_OF_DONATION_COLUMN_HEADER] += f"\r\n{row[DATE_OF_DONATION_COLUMN_HEADER]}"
+        if row[identifier_header] in data.keys():
+            print(f'Found a duplicate entry for: {row[identifier_header]}')
+            id = row[identifier_header]
+            data[id][contribution_header] += int(float(row[contribution_header]))
+            data[id][date_header] += f"\r\n{row[date_header]}"
             data[id]['file_name'] += f"\r\n{row['file_name']}"
         else:
-            key = row[UNIQUE_ID_COLUMN_HEADER]
+            key = row[identifier_header]
             data[key] = {}
             for k, v in row.items():
                 data[key][k] = str(v)
 
             # Convert the donation amount to an integer
             try:
-                data[key][CONTRIBUTION_COLUMN_HEADER] = int(float(data[key][CONTRIBUTION_COLUMN_HEADER]))
+                data[key][contribution_header] = int(float(data[key][contribution_header]))
             except ValueError:
                 print(f"User found with invalid donation: {row}")
 
@@ -238,7 +246,10 @@ def main():
     write_out_csv_file(csv_data, "all_files_merged_output")
 
     print("Find all duplicate email addresses, and combine the donations")
-    csv_data = merge_donations(csv_data)
+    csv_data = merge_donations(csv_data,
+                               UNIQUE_ID_COLUMN_HEADER,
+                               CONTRIBUTION_COLUMN_HEADER,
+                               DATE_OF_DONATION_COLUMN_HEADER)
 
     print("Write out the data with combined money")
     write_out_csv_file(csv_data, "combined_donation_output")
