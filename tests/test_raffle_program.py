@@ -1,5 +1,7 @@
 import raffle_program
 import pytest
+from unittest.mock import patch
+from unittest.mock import mock_open
 
 TEST_DONATION_TICKET_DEF = {
         3: 1,
@@ -246,3 +248,43 @@ def test_merge_donations_valid_data():
     assert "01/02/03" in results[1]["date"]
     assert "b" in results[1]["file_name"]
     assert "d" in results[1]["file_name"]
+
+
+def test_write_out_to_csv_with_custom_file_prefix():
+    test_list = [
+            {"name": "John Doe", "Amount": 0},
+            {"name": "Jane Doe", "Amount": 9},
+            {"name": "Doe Ray Mi", "Amount": 15},
+            {"name": "Jake Doe", "Amount": 199},
+            {"name": "Jimme Dough", "Amount": 1000}
+            ]
+    m = mock_open()
+    with patch("builtins.open", m, create=True):
+        raffle_program.write_out_csv_file(test_list, "test_prefix")
+
+    m.assert_called_once()
+    calls = str(m.mock_calls)
+
+    assert calls.count("write") == 6
+    assert "test_prefix" in calls
+    assert m.call_count == 1
+
+def test_write_out_to_csv_with_default_file_prefix():
+    test_list = [
+            {"name": "John Doe", "Amount": 0},
+            {"name": "Jane Doe", "Amount": 9},
+            {"name": "Doe Ray Mi", "Amount": 15},
+            {"name": "Jake Doe", "Amount": 199},
+            {"name": "Jimme Dough", "Amount": 1000}
+            ]
+    m = mock_open()
+    with patch("builtins.open", m, create=True):
+        raffle_program.write_out_csv_file(test_list)
+
+    m.assert_called_once()
+    calls = str(m.mock_calls)
+
+    assert calls.count("write") == 6
+    assert "default_output" in calls
+    assert m.call_count == 1
+
