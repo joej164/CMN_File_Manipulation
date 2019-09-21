@@ -310,3 +310,20 @@ def test_read_in_valid_csv_files(mock_file):
     out = raffle_program.read_in_csv_files(['file1', 'file2'])
 
     assert expected_out == out
+
+
+@patch('raffle_program.pathlib.Path.glob')
+def test_list_files_to_combine(mock_glob):
+    expected_output = ['file1.csv', 'file2.csv']
+    mock_glob.return_value = expected_output
+    out = raffle_program.list_files_to_combine()
+    assert out == expected_output
+
+
+@patch('raffle_program.pathlib.Path.glob')
+def test_list_files_to_combine_no_files(mock_glob):
+    mock_glob.return_value = []
+    with pytest.raises(ValueError) as e:
+        raffle_program.list_files_to_combine()
+
+    assert str(e.value) == "There must be at least one CSV file in the `input_files` folder"
