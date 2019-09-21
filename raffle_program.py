@@ -62,13 +62,15 @@ def read_in_csv_files(files):
     for file in files:
         with open(file, newline='', encoding='utf8') as csvfile:
             # Remove leading lines from the CSV file
-            line = ''
-            while CONTRIBUTION_COLUMN_HEADER not in line:
+            line = 'initial_value'
+            while CONTRIBUTION_COLUMN_HEADER not in line and line:
+                print(line)
                 line = csvfile.readline()
 
             # Define the file_header_list
+            print(line)
             file_headers_list = line.rstrip().split(',')
-
+            print(file_headers_list)
             # Read in the data into memory
             reader = csv.DictReader(csvfile, fieldnames=file_headers_list)
             for row in reader:

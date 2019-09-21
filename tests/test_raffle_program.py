@@ -269,7 +269,9 @@ def test_write_out_to_csv_with_custom_file_prefix():
     assert "test_prefix" in calls
     assert m.call_count == 1
 
-def test_write_out_to_csv_with_default_file_prefix():
+
+@patch("builtins.open", new_callable=mock_open, create=True)
+def test_write_out_to_csv_with_default_file_prefix(mock_file):
     test_list = [
             {"name": "John Doe", "Amount": 0},
             {"name": "Jane Doe", "Amount": 9},
@@ -277,14 +279,34 @@ def test_write_out_to_csv_with_default_file_prefix():
             {"name": "Jake Doe", "Amount": 199},
             {"name": "Jimme Dough", "Amount": 1000}
             ]
-    m = mock_open()
-    with patch("builtins.open", m, create=True):
-        raffle_program.write_out_csv_file(test_list)
 
-    m.assert_called_once()
-    calls = str(m.mock_calls)
+    raffle_program.write_out_csv_file(test_list)
+
+    mock_file.assert_called_once()
+    calls = str(mock_file.mock_calls)
 
     assert calls.count("write") == 6
     assert "default_output" in calls
-    assert m.call_count == 1
+    assert mock_file.call_count == 1
 
+
+@patch("builtins.open", new_callable=mock_open, read_data='1,2,3')
+def test_read_in_invalid_csv_files(mock_file):
+    with pytest.raises(ValueError) as e:
+        raffle_program.read_in_csv_files(['file1', 'file2', 'file3'])
+
+    assert str(e.value) == "The CSV files were blank, there must be at least one entry"
+
+
+@patch("builtins.open", new_callable=mock_open, read_data='Amount\n10\n20')
+def test_read_in_valid_csv_files(mock_file):
+    expected_out = [
+            {'Amount': '10', 'file_name': 'file1'},
+            {'Amount': '20', 'file_name': 'file1'},
+            {'Amount': '10', 'file_name': 'file2'},
+            {'Amount': '20', 'file_name': 'file2'}
+            ]
+
+    out = raffle_program.read_in_csv_files(['file1', 'file2'])
+
+    assert expected_out == out
